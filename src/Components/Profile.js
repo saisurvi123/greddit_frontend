@@ -25,7 +25,7 @@ import followingicon from "./following.png";
 import FollowingModal from "./FolllowingModal"
 import { useState } from "react";
 const theme = createTheme();
-const host = "http://localhost:5000";
+const host = "https://redditbackend.onrender.com";
 const style = {
   position: "absolute",
   top: "50%",
@@ -116,7 +116,7 @@ function Profile() {
                 spacing={2}
                 className="my-3"
               >
-                <Avatar sx={{ width: 64, height: 64 }}>N</Avatar>
+                <Avatar sx={{ width: 64, height: 64 }}>{userdetails.firstname[0].toUpperCase()}</Avatar>
                 <Typography align="center" variant="h5" gutterBottom>
                   {" "}
                   {userdetails.firstname} {userdetails.lastname}

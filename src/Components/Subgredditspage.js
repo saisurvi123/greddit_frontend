@@ -10,12 +10,14 @@ import { useNavigate } from "react-router-dom";
 import AddIcon from "@mui/icons-material/Add";
 import { Button } from "@mui/material";
 import Createpost from "./Createpost"
+import PostDesign from "./PostDesign";
 
 // import Sgfollowers from "./Sgfollowers";
-const host = "http://localhost:5000";
+const host = "https://redditbackend.onrender.com";
 function Subgredditspage() {
   const navigate = useNavigate();
   const [greddit, setgreddit] = useState(null);
+  const [user, setuser] = useState(null)
   const params = useParams();
   const leavegreddit = async (gredditid) => {
     const response = await fetch(`${host}/api/subgreddit/leavegreddit`, {
@@ -32,6 +34,26 @@ function Subgredditspage() {
     navigate("/subgreddits")
     //   if (!json.error) setgreddit(json);
   };
+  const [addpage, setaddpage] = useState(false)
+
+
+  const getuser = async () => {
+    const response = await fetch(`${host}/api/auth/getuser`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "auth-token": localStorage.getItem("token"),
+      },
+    });
+    const json = await response.json();
+    console.log(json);
+    if (json.error) alert(json.error);
+    else {
+      setuser(json)
+    }
+  };
+
+
 
 
   const fetchdata = async () => {
@@ -39,6 +61,7 @@ function Subgredditspage() {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        "auth-token":localStorage.getItem('token')
       },
       body: JSON.stringify({ id: params.id }),
     });
@@ -52,13 +75,14 @@ function Subgredditspage() {
       navigate("/login");
     } else {
       fetchdata();
+      getuser()
       console.log(greddit);
     }
-  }, []);
+  }, [addpage]);
 
   return (
     <>
-      {greddit && (
+      {greddit && user && (
         <div className="container my-5">
           <Stack
             direction="row"
@@ -66,9 +90,9 @@ function Subgredditspage() {
             alignItems="center"
             spacing={2}
           >
-            <Createpost/>
-            <Button variant="contained" color="error" onClick={leavegreddit}>
-              Leave
+            <Createpost id={params.id} setaddpage={setaddpage} addpage={addpage} />
+            <Button variant="contained" color="error" onClick={leavegreddit}   disabled={greddit.user===user._id}>
+              Exit
             </Button>
           </Stack>
           <Stack
@@ -77,9 +101,7 @@ function Subgredditspage() {
             alignItems="center"
             spacing={2}
           >
-            <Avatar variant="rounded">
-              <AssignmentIcon />
-            </Avatar>
+              <AssignmentIcon  color="primary"/>
             <h3>{greddit.name}</h3>
           </Stack>
           <p className="my-4">{greddit.description}</p>
@@ -103,19 +125,21 @@ function Subgredditspage() {
               );
             })}
           </div>
-          {/* <div className="row my-5">
-            <div className="col">
-              <h5>Unblocked users</h5>
-              <List>
-                {greddit.followers.map((user) => {
-                  return <Sgfollowers id={user} />;
-                })}
-              </List>
-            </div>
-            <div className="col">
-              <h5>blocked users</h5>
-            </div>
-          </div> */}
+          <div className="row">
+            {
+              (greddit.posts.length!=0) && (
+                greddit.posts.map((post)=>{
+                  return (
+                    <div className="col col-md-12 my-4">
+                      <PostDesign id={post}/>
+                    </div>
+                  )
+                })
+              )
+            }
+          </div>
+
+
         </div>
       )}
     </>

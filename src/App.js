@@ -12,30 +12,57 @@ import Sgstate from "./Context/subgreddits/Sgstate";
 import Mysubgredditpage from "./Components/Mysubgredditpage";
 import Subgreddits from "./Components/Subgreddits";
 import Subgredditspage from "./Components/Subgredditspage";
-function App() {
-  // const user=useContext(postcontext).user;
-  return (
-    <>
-    <Sgstate>
-      <Poststate>
-        <Router>
-          <Navbar />
-          <Routes>
-            <Route exact path="/" element={<Home />} />
-            <Route exact path="/mysubgreddits" element={<MySubgreddits/>} />
-            <Route exact path="/subgreddits" element={<Subgreddits/>} />
-            <Route exact path="/login" element={<Signin />} />
-            <Route exact path="/signup" element={<Signup />} />
-            <Route exact path="/profile" element={<Profile />} />
-            <Route exact path="/mygredditpage/:id" element={<Mysubgredditpage/>} />
-            <Route exact path="/subgreddits/:id" element={<Subgredditspage/>} />
-            
+import Savedposts from "./Components/Savedposts";
+import { useState } from "react";
+import "./App.css";
+import { createTheme, CssBaseline, ThemeProvider } from "@mui/material";
 
-          </Routes>
-        </Router>
-      </Poststate>
+const theme = createTheme({
+  palette: {
+    mode: "dark",
+  },
+});
+
+const Lighttheme = createTheme();
+
+function App() {
+  // const mode=useContext(postcontext).mode
+  return (
+    <div>
+      <Sgstate>
+        <Poststate>
+          <ThemeProvider theme={theme}>
+            <CssBaseline />
+            <Router>
+              <Navbar />
+              <Routes>
+                <Route exact path="/" element={<Home />} />
+                <Route
+                  exact
+                  path="/mysubgreddits"
+                  element={<MySubgreddits />}
+                />
+                <Route exact path="/subgreddits" element={<Subgreddits />} />
+                <Route exact path="/login" element={<Signin />} />
+                <Route exact path="/signup" element={<Signup />} />
+                <Route exact path="/profile" element={<Profile />} />
+                <Route
+                  exact
+                  path="/mygredditpage/:id"
+                  element={<Mysubgredditpage />}
+                />
+                <Route
+                  exact
+                  path="/subgreddits/:id"
+                  element={<Subgredditspage />}
+                />
+                <Route exact path="/savedposts" element={<Savedposts />} />
+              </Routes>
+            </Router>
+          </ThemeProvider>
+        </Poststate>
       </Sgstate>
-    </>
+    </div>
   );
 }
 

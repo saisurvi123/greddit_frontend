@@ -10,7 +10,7 @@ import Avatar from "@mui/material/Avatar";
 import { blue } from "@mui/material/colors";
 import { Button } from "@mui/material";
 import { useState } from "react";
-const host = "http://localhost:5000";
+const host = "https://redditbackend.onrender.com";
 
 function Anotheruser(props) {
   const [user, setuser] = useState(null);

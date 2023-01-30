@@ -1,12 +1,12 @@
 import { useState } from "react";
 import postcontext from "./postcontext";
-const host = "https://keepnotes-wfzj.onrender.com";
+const host = "https://redditbackend.onrender.com";
 
 const Poststate=(props)=>{
-    const [user, setuser] = useState(null);
+    const [mode, setmode] = useState(true);
     return (
         <postcontext.Provider
-          value={{ user,setuser}}
+          value={{ mode,setmode}}
         >
           {props.children}
         </postcontext.Provider>

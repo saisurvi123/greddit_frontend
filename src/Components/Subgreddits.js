@@ -22,7 +22,7 @@ import AddIcon from "@mui/icons-material/Add";
 import InputAdornment from "@mui/material/InputAdornment";
 import { MenuItem } from "@mui/material";
 import { useRef } from "react";
-const host = "http://localhost:5000";
+const host = "https://redditbackend.onrender.com";
 function Subgreddits() {
   const [greddits, setgreddits] = useState([]);
   const sorttype = ["Name Asc", "Name Desc", "FollowerCount", "CreationDate"];
@@ -60,25 +60,26 @@ function Subgreddits() {
       },
     });
     const json = await response.json();
-    console.log(json)
+    console.log(json);
     if (!json.error) setgreddits(json);
     else {
       alert(json.error);
     }
   };
-  const joinrequest=async(gredditid)=>{
-    const newdata={
-      gredditid:gredditid
-    }
+  const joinrequest = async (gredditid) => {
+    const newdata = {
+      gredditid: gredditid,
+
+    };
     const response = await fetch(`${host}/api/subgreddit/joinrequest`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "auth-token": localStorage.getItem("token")
+        "auth-token": localStorage.getItem("token"),
       },
-      body: JSON.stringify(newdata)
+      body: JSON.stringify(newdata),
     });
-  }
+  };
 
   const getmyid = async () => {
     const response = await fetch(`${host}/api/auth/getmyid`, {
@@ -96,7 +97,7 @@ function Subgreddits() {
   };
 
   const navigate = useNavigate();
-  const [click, setclick] = useState(false)
+  const [click, setclick] = useState(false);
   useEffect(() => {
     if (!localStorage.getItem("token")) {
       navigate("/login");
@@ -105,12 +106,40 @@ function Subgreddits() {
       getmyid();
     }
   }, [click]);
-  const joinuser=(gredditid)=>{
+  const joinuser = (gredditid) => {
     // console.log(e.target.value);
     joinrequest(gredditid);
-    if(click==false)setclick(true)
+    if (click == false) setclick(true);
     else setclick(false);
+  };
+
+  function addDays(date, days) {
+    var result = new Date(date);
+    result.setDate(result.getDate() + days);
+    return result;
   }
+
+  const joinrejecteduser=(gredditid)=>{
+    const greddit2=greddits.filter((greddit1)=>greddit1._id===gredditid);
+    console.log(greddit2)
+    if(greddit2[0].followers.find((follower)=>{
+      var presentdate= new Date();
+      // var finaldate=addDays(follower.date,0);
+      var finaldate = new Date(follower.date)
+      if(presentdate.getTime()  - finaldate.getTime()){
+        return follower;
+      }
+
+    })){
+      joinuser(gredditid);
+    }
+    else{
+      alert("you cannot send join request for 7 days once moderator cancels request")
+    }
+
+      
+  } 
+
   return (
     <div className="container my-5">
       <div className="row my-5">
@@ -185,7 +214,9 @@ function Subgreddits() {
         {greddits.length != 0 &&
           greddits
             .filter((greddit) => {
-              {/* console.log(greddit); */}
+              {
+                /* console.log(greddit); */
+              }
               if (searchedword == "") {
                 if (tags.length == 0) return greddit;
                 else {
@@ -209,8 +240,8 @@ function Subgreddits() {
                 return a.name.toLowerCase().localeCompare(b.name.toLowerCase());
               } else if (st == "Name Desc") {
                 return b.name.toLowerCase().localeCompare(a.name.toLowerCase());
-              } else if (st == "Followercount") {
-                if (a.followers.length > b.followers.length) return 1;
+              } else if (st == "FollowerCount") {
+                if (a.followers.length < b.followers.length) return 1;
                 return -1;
               } else {
                 if (a.name < b.name) return 1;
@@ -276,56 +307,81 @@ function Subgreddits() {
                             {greddit.posts.length} posts
                           </Typography>
                         </>
-                        {!greddit.followers.find((user1)=>{
-                          return (user1.id===id &&
-                          user1.status=== "accepted")
+                        {!greddit.followers.find((user1) => {
+                          return (
+                            user1.id === id &&
+                            (user1.status === "accepted" ||
+                              user1.status === "temprejected")
+                          );
                         }) &&
-                          !greddit.followers.find((user1)=>{
-                          return (user1.id===id &&
-                          user1.status=== "requested")
-                        }) &&
-                          !greddit.followers.find((user1)=>{
-                          return (user1.id===id &&
-                          user1.status=== "rejected")
-                        }) && !(greddit.user===id) && (
-                            <Button variant="contained" className="mx-5" onClick={()=>joinuser(greddit._id)}
-                            value="sai" >
+                          !greddit.followers.find((user1) => {
+                            return (
+                              user1.id === id && user1.status === "requested"
+                            );
+                          }) &&
+                          !greddit.followers.find((user1) => {
+                            return (
+                              user1.id === id && user1.status === "rejected"
+                            );
+                          }) &&
+                          !(greddit.user === id) && (
+                            <Button
+                              variant="contained"
+                              className="mx-5"
+                              onClick={() => joinuser(greddit._id)}
+                              value="sai"
+                            >
                               Join
                             </Button>
                           )}
-                        {(greddit.followers.find((user1)=>{
-                          return (user1.id===id &&
-                          user1.status ==="accepted")
-                        })  || (greddit.user===id))&& (
-                          <Button variant="contained" className="mx-5" 
-                          onClick={()=> navigate(`/subgreddits/${greddit._id}`)}
+
+
+
+                        {(greddit.followers.find((user1) => {
+                          return user1.id === id && user1.status === "accepted";
+                        }) ||
+                          greddit.user === id) && (
+                          <Button
+                            variant="contained"
+                            className="mx-5"
+                            onClick={() =>
+                              navigate(`/subgreddits/${greddit._id}`)
+                            }
                           >
                             open
                           </Button>
                         )}
-                        {greddit.followers.find((user1)=>{
-                          return (user1.id===id &&
-                          user1.status=== "requested")
-                        }) && (
+
+                        {greddit.followers.find((user1) => {
+                          return (
+                            user1.id === id && user1.status === "requested"
+                          );
+                        }) &&!(greddit.user === id)&& (
                           <Button variant="contained" className="mx-5" disabled>
                             requested
                           </Button>
                         )}
 
-                        {
-                          greddit.followers.find((user1)=>{
-                          return (user1.id===id &&
-                          user1.status=== "rejected")
-                        }) &&
-                          (
-                          <Button variant="contained" className="mx-5" disabled>
+                        {greddit.followers.find((user1) => {
+                          return user1.id === id && user1.status === "rejected";
+                        }) && (
+                          <Button variant="contained" className="mx-5" 
+                            onClick={()=> alert(" cannot join !! you left the subgreddit")}
+                          >
                             Join
                           </Button>
-                        )
-
-                        }
-
-
+                        )}
+                        {greddit.followers.find((user1) => {
+                          return (
+                            user1.id === id && user1.status === "temprejected"
+                          );
+                        }) && (
+                          <Button variant="contained" className="mx-5" 
+                          onClick={()=>joinrejecteduser(greddit._id)}
+                          >
+                            Join
+                          </Button>
+                        )}
                       </Stack>
                     </CardActions>
                   </Card>
