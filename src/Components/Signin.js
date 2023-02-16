@@ -34,7 +34,7 @@ export default function SignIn() {
   // const setuser=useContext(postcontext).setuser;
   const [flag, setflag] = useState(false);
   const navigate = useNavigate();
-  const host = "http://localhost:5000";
+  const host = "https://redditbackend.onrender.com";
   const handleSubmitsignup = async (event) => {
     setprog(true);
     event.preventDefault();
