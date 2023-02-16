@@ -16,7 +16,7 @@ import { useNavigate } from "react-router-dom";
 
 export default function SignUp() {
     const navigate=useNavigate();
-    const host = "http://localhost:5000";
+    const host = "https://redditbackend.onrender.com";
   
   return (
     <>

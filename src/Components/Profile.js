@@ -28,7 +28,7 @@ import Buffer from "./Buffer"
 
 import { useState } from "react";
 const theme = createTheme();
-const host = "http://localhost:5000";
+const host = "https://redditbackend.onrender.com";
 const style = {
   position: "absolute",
   top: "50%",

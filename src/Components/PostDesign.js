@@ -74,7 +74,7 @@ const ExpandMore = styled((props) => {
     duration: theme.transitions.duration.shortest,
   }),
 }));
-const host = "http://localhost:5000";
+const host = "https://redditbackend.onrender.com";
 
 export default function RecipeReviewCard(props) {
   // console.log(props.id);

@@ -11,7 +11,7 @@ import { Stack } from "@mui/material";
 import { Button } from "@mui/material";
 function Sgfollowers(props) {
   const [user, setuser] = useState(null);
-  const host = "http://localhost:5000";
+  const host = "https://redditbackend.onrender.com";
   // console.log(props.id)
 
   const acceptreq = async () => {

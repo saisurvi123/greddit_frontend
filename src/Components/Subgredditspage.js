@@ -14,7 +14,7 @@ import Buffer from "./Buffer"
 import PostDesign from "./PostDesign";
 
 // import Sgfollowers from "./Sgfollowers";
-const host = "http://localhost:5000";
+const host = "https://redditbackend.onrender.com";
 function Subgredditspage() {
   const navigate = useNavigate();
   const [greddit, setgreddit] = useState(null);

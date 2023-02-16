@@ -9,7 +9,7 @@ import Button from "@mui/material/Button";
 import { useEffect } from "react";
 import Typography from "@mui/material/Typography";
 import CancelableButton from "./Cancelinsec";
-const host = "http://localhost:5000";
+const host = "https://redditbackend.onrender.com";
 function Report(props) {
   const ignorereport = async () => {
     const response = await fetch(`${host}/api/subgreddit/ignorereport`, {

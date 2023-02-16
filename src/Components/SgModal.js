@@ -19,7 +19,7 @@ import { Stack, Chip } from "@mui/material";
 import { useContext } from "react";
 import sgcontext from "../Context/subgreddits/sgcontext";
 
-const host = "http://localhost:5000";
+const host = "https://redditbackend.onrender.com";
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
