@@ -9,6 +9,12 @@ import CardActions from "@mui/material/CardActions";
 import Collapse from "@mui/material/Collapse";
 import Avatar from "@mui/material/Avatar";
 import IconButton from "@mui/material/IconButton";
+import TextField from "@mui/material/TextField";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogTitle from "@mui/material/DialogTitle";
 import Typography from "@mui/material/Typography";
 import { red } from "@mui/material/colors";
 import FavoriteIcon from "@mui/icons-material/Favorite";
@@ -23,6 +29,7 @@ import { Button, ListItem } from "@mui/material";
 import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
 import { Navigate, useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { Box } from "@mui/material";
 import Paper from "@mui/material/Paper";
 import InputBase from "@mui/material/InputBase";
 import Divider from "@mui/material/Divider";
@@ -41,8 +48,8 @@ import ThumbDownIcon from "@mui/icons-material/ThumbDown";
 import { createTheme } from "@mui/material";
 import BookmarkAddIcon from "@mui/icons-material/BookmarkAdd";
 import BookmarkAddedIcon from "@mui/icons-material/BookmarkAdded";
-import ReportIcon from '@mui/icons-material/Report';
-import ReportOutlinedIcon from '@mui/icons-material/ReportOutlined';
+import ReportIcon from "@mui/icons-material/Report";
+import ReportOutlinedIcon from "@mui/icons-material/ReportOutlined";
 const theme = createTheme({
   typography: {
     subtitle1: {
@@ -67,16 +74,27 @@ const ExpandMore = styled((props) => {
     duration: theme.transitions.duration.shortest,
   }),
 }));
-const host = "https://redditbackend.onrender.com";
+const host = "http://localhost:5000";
 
 export default function RecipeReviewCard(props) {
   // console.log(props.id);
   const [presentuser, setpresentuser] = useState(null);
   const [flag, setflag] = useState(false);
   const commentref = useRef("");
+  const concernref = useRef("");
   const [following, setfollowing] = useState([]);
   const [savedposts, setsavedposts] = useState([]);
   const [post, setpost] = useState(null);
+  const [open, setOpen] = React.useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
   const fetchpost = async () => {
     const response = await fetch(`${host}/api/subgreddit/getpost`, {
       method: "POST",
@@ -87,7 +105,10 @@ export default function RecipeReviewCard(props) {
       body: JSON.stringify({ postid: props.id }),
     });
     const json = await response.json();
-    console.log(json);
+    let localtime=new Date(Number(json.date));
+    json.date=localtime.toDateString()
+    json.time=localtime.toTimeString()
+    // console.log(json);
     if (json.error) alert(json.error);
     else {
       setpost(json);
@@ -102,7 +123,7 @@ export default function RecipeReviewCard(props) {
       },
     });
     const json = await response.json();
-    console.log(json);
+    // console.log(json);
     if (json.error) alert(json.error);
     else {
       setpresentuser(json._id);
@@ -112,7 +133,7 @@ export default function RecipeReviewCard(props) {
   };
   const sendcomment = async () => {
     const text = commentref.current.value;
-    console.log(text);
+    // console.log(text);
     const response = await fetch(`${host}/api/subgreddit/postcomment`, {
       method: "POST",
       headers: {
@@ -122,7 +143,7 @@ export default function RecipeReviewCard(props) {
       body: JSON.stringify({ postid: post._id, comment: text }),
     });
     const json = await response.json();
-    console.log(json);
+    // console.log(json);
     commentref.current.value = "";
     if (json.error) alert(json.error);
     if (flag) setflag(false);
@@ -138,7 +159,7 @@ export default function RecipeReviewCard(props) {
       body: JSON.stringify({ postid: post._id }),
     });
     const json = await response.json();
-    console.log(json);
+    // console.log(json);
     if (json.error) alert(json.error);
     if (flag) setflag(false);
     else setflag(true);
@@ -155,7 +176,7 @@ export default function RecipeReviewCard(props) {
       body: JSON.stringify({ postid: post._id }),
     });
     const json = await response.json();
-    console.log(json);
+    // console.log(json);
     if (json.error) alert(json.error);
     if (flag) setflag(false);
     else setflag(true);
@@ -171,7 +192,7 @@ export default function RecipeReviewCard(props) {
       body: JSON.stringify({ postid: post._id }),
     });
     const json = await response.json();
-    console.log(json);
+    // console.log(json);
     if (json.error) alert(json.error);
     if (flag) setflag(false);
     else setflag(true);
@@ -188,12 +209,12 @@ export default function RecipeReviewCard(props) {
       body: JSON.stringify({ postid: post._id }),
     });
     const json = await response.json();
-    console.log(json);
+    // console.log(json);
     if (json.error) alert(json.error);
     if (flag) setflag(false);
     else setflag(true);
     if (props.savedpostflag !== null) {
-      console.log("hello ever");
+      // console.log("hello ever");
       if (props.savedpostflag) {
         props.setsavedpostflag(false);
       } else {
@@ -211,18 +232,41 @@ export default function RecipeReviewCard(props) {
       body: JSON.stringify({ postid: post._id }),
     });
     const json = await response.json();
-    console.log(json);
+    // console.log(json);
     if (json.error) alert(json.error);
     if (flag) setflag(false);
     else setflag(true);
     if (props.savedpostflag !== null) {
-      console.log("hello ever");
+      // console.log("hello ever");
       if (props.savedpostflag) {
         props.setsavedpostflag(false);
       } else {
         props.setsavedpostflag(true);
       }
     }
+  };
+  // create report
+  const createreport = async () => {
+    const response = await fetch(`${host}/api/subgreddit/createreport`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "auth-token": localStorage.getItem("token"),
+      },
+      body: JSON.stringify({
+        postid: post._id,
+        gredditid: post.gredditid,
+        postedby: post.postedby,
+        concern:concernref.current.value
+      }),
+    });
+    const json = await response.json();
+    // console.log(json);
+    // console.log(json);
+    if (json.error) alert(json.error);
+    if (flag) setflag(false);
+    else setflag(true);
+    handleClose();
   };
 
   // dislike post
@@ -236,7 +280,7 @@ export default function RecipeReviewCard(props) {
       body: JSON.stringify({ postid: post._id }),
     });
     const json = await response.json();
-    console.log(json);
+    // console.log(json);
     if (json.error) alert(json.error);
     if (flag) setflag(false);
     else setflag(true);
@@ -252,7 +296,7 @@ export default function RecipeReviewCard(props) {
       body: JSON.stringify({ postid: post._id }),
     });
     const json = await response.json();
-    console.log(json);
+    // console.log(json);
     if (json.error) alert(json.error);
     if (flag) setflag(false);
     else setflag(true);
@@ -267,7 +311,7 @@ export default function RecipeReviewCard(props) {
       getuser();
     }
   }, [flag]);
-
+  const openreport = () => {};
   const [expanded, setExpanded] = React.useState(false);
 
   const handleExpandClick = () => {
@@ -276,8 +320,10 @@ export default function RecipeReviewCard(props) {
 
   return (
     <>
-      {console.log(following)}
+    {console.log(post)}
       {post && (
+        
+        
         <Card>
           <CardHeader
             avatar={
@@ -288,17 +334,55 @@ export default function RecipeReviewCard(props) {
             action={
               following.includes(presentuser) ? (
                 <>
-                <ReportOutlinedIcon/>
+                  <ReportOutlinedIcon />
                   <Button onClick={followpost}>
                     <b>UnFollow</b>
                   </Button>
                 </>
               ) : (
                 <>
-                <ReportOutlinedIcon color="primary"/>
-                <Button startIcon={<AddIcon />} onClick={followpost}>
-                  <b>Follow</b>
-                </Button>
+                  <IconButton aria-label="delete" size="small">
+                    <ReportOutlinedIcon
+                      onClick={handleClickOpen}
+                      color="primary"
+                    />
+                  </IconButton>
+                  <Dialog
+                    open={open}
+                    onClose={handleClose}
+                    aria-labelledby="alert-dialog-title"
+                    aria-describedby="alert-dialog-description"
+                  >
+                    <DialogTitle id="alert-dialog-title">
+                      {"Report this Post!!"}
+                    </DialogTitle>
+                    <DialogContent>
+                      <Box
+                        sx={{
+                          width: 500,
+                          maxWidth: "100%",
+                        }}
+                      >
+                        <TextField
+                          id="outlined-multiline-static"
+                          label="your concern"
+                          multiline
+                          fullWidth
+                          rows={4}
+                          inputRef={concernref}
+                        />
+                      </Box>
+                    </DialogContent>
+                    <DialogActions>
+                      <Button onClick={createreport}>Report</Button>
+                      <Button onClick={handleClose} autoFocus>
+                        Cancel
+                      </Button>
+                    </DialogActions>
+                  </Dialog>
+                  <Button startIcon={<AddIcon />} onClick={followpost}>
+                    <b>Follow</b>
+                  </Button>
                 </>
               )
             }

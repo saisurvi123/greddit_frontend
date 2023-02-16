@@ -19,6 +19,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { useContext } from "react";
 import sgcontext from "../Context/subgreddits/sgcontext";
 import DeleteIcon from "@mui/icons-material/Delete";
+import Buffer from "./Buffer"
 function MySubgreddits() {
   const navigate = useNavigate();
   const bull = (
@@ -58,8 +59,10 @@ function MySubgreddits() {
       >
         <SgModal />
       </Stack>
+      {!greddits && <Buffer/>}
       <div className="row">
-        {greddits.length != 0 &&
+      
+        { greddits && greddits.length != 0 &&
           greddits.map((greddit) => {
             return (
               <div key={greddit._id} className="col col-md-4 my-3">
@@ -108,7 +111,7 @@ function MySubgreddits() {
                           <PeopleAltIcon />
                         </IconButton>
                         <Typography variant="body2">
-                          {greddit.followers.length + 1} followers
+                        {greddit.followers.filter((flwr)=>flwr.status==="accepted").length+1} followers
                         </Typography>
                       </>
                       <>

@@ -13,6 +13,7 @@ import ListItemButton from "@mui/material/ListItemButton";
 import PersonIcon from "@mui/icons-material/Person";
 import ListItemAvatar from "@mui/material/ListItemAvatar";
 import FixedList from "./FixedList";
+import Buffer from "./Buffer";
 import { useNavigate } from "react-router-dom";
 import { FixedSizeList } from "react-window";
 import { blue } from "@mui/material/colors";
@@ -21,10 +22,23 @@ import CircleNotificationsIcon from "@mui/icons-material/CircleNotifications";
 import PropTypes from "prop-types";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
-import Typography from "@mui/material/Typography";
+// import Typography from "@mui/material/Typography";
+import DeleteIcon from "@mui/icons-material/Delete";
+import BlockIcon from "@mui/icons-material/Block";
 import Box from "@mui/material/Box";
+import Card from "@mui/material/Card";
+import CardActions from "@mui/material/CardActions";
+import CardContent from "@mui/material/CardContent";
+import Button from "@mui/material/Button";
+import Typography from "@mui/material/Typography";
 import PeopleOutlineOutlinedIcon from "@mui/icons-material/PeopleOutlineOutlined";
-const host = "https://redditbackend.onrender.com";
+import Report from "./Report";
+import Growthsb from "./Growthsb"
+import Postsgrowth from "./Postsgrowth"
+import Visitorsgrowth from "./Visitorsgrowth"
+import Reportedpostsgrowth from "./Reportedpostsgrowth"
+const host = "http://localhost:5000";
+// const green="#4caf50"
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -66,6 +80,7 @@ function Mysubgredditpage() {
 
   const params = useParams();
   const [greddit, setgreddit] = useState(null);
+  const [reports, setreports] = useState(null);
   const navigate = useNavigate();
   const [flag, setflag] = useState(false);
   const fetchdata = async () => {
@@ -82,19 +97,35 @@ function Mysubgredditpage() {
     if (!json.error) setgreddit(json);
   };
 
+  const fetchreports = async () => {
+    const response = await fetch(`${host}/api/subgreddit/getreports`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ id: params.id }),
+    });
+    const json = await response.json();
+    // console.log("hey hello");
+    console.log(json);
+    if (!json.error) setreports(json);
+  };
+
   useEffect(() => {
     console.log(params.id);
     if (!localStorage.getItem("token")) {
       navigate("/login");
     } else {
       fetchdata();
+      fetchreports();
       console.log(greddit);
     }
   }, [flag]);
 
   return (
     <>
-      {greddit && (
+      {(!greddit || !reports) && <Buffer />}
+      {greddit && reports && (
         <>
           <div className="mx-4 my-4">
             <Box sx={{ width: "100%" }}>
@@ -116,6 +147,7 @@ function Mysubgredditpage() {
                   <Tab label="Users" {...a11yProps(1)} />
                   <Tab label="Join Requests" {...a11yProps(2)} />
                   <Tab label={<>Reporting page</>} {...a11yProps(3)} />
+                  <Tab label={"Stats"} {...a11yProps(4)} />
                 </Tabs>
               </Box>
               <TabPanel value={value} index={0}>
@@ -184,6 +216,13 @@ function Mysubgredditpage() {
                       <PeopleOutlineOutlinedIcon />
                       <h5> Blocked users</h5>
                     </Stack>
+                    <List>
+                      {greddit.followers
+                        .filter((user) => user.status === "blocked")
+                        .map((user) => {
+                          return <Sgfollowers id={user} />;
+                        })}
+                    </List>
                   </div>
                 </div>
               </TabPanel>
@@ -223,7 +262,34 @@ function Mysubgredditpage() {
                   </div>
                 </div>
               </TabPanel>
-              <TabPanel value={value} index={3}></TabPanel>
+              <TabPanel value={value} index={3}>
+                {reports && reports.length === 0 && <h5>No Reports</h5>}
+                {reports.map((report) => {
+                  return (
+                    <>
+                      <Report report={report} setflag={setflag} flag={flag} />
+                    </>
+                  );
+                })}
+              </TabPanel>
+              <TabPanel value={value} index={4}>
+                <div className="row ">
+                  <div className="col col-md-6 col-sm-12">
+                    <Growthsb  id={params.id}/>
+                  </div>
+                  <div className="col col-md-6 col-sm-12">
+                    <Postsgrowth id={params.id}/>
+                  </div>
+                </div>
+                <div className="row ">
+                  <div className="col col-md-6 col-sm-12">
+                    <Visitorsgrowth  id={params.id}/>
+                  </div>
+                  <div className="col col-md-6 col-sm-12">
+                    <Reportedpostsgrowth id={params.id}/>
+                  </div>
+                </div>
+              </TabPanel>
             </Box>
           </div>
         </>

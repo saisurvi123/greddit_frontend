@@ -14,15 +14,29 @@ import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useNavigate } from "react-router-dom";
 import useContext from "react";
+import Linearprogress from "./Linearprogress";
 import postcontext from "../Context/posts/postcontext";
 import { useState } from "react";
+import Snackbar from "@mui/material/Snackbar";
+import MuiAlert from "@mui/material/Alert";
+import Slide from '@mui/material/Slide';
+import Grow from '@mui/material/Grow';
+const Alert = React.forwardRef(function Alert(props, ref) {
+  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
 
+function SlideTransition(props) {
+  return <Slide {...props} direction="up" />;
+}
 export default function SignIn() {
+  const [prog, setprog] = useState(false);
+  const [open, setopen] = useState(false);
   // const setuser=useContext(postcontext).setuser;
   const [flag, setflag] = useState(false);
   const navigate = useNavigate();
-  const host = "https://redditbackend.onrender.com";
+  const host = "http://localhost:5000";
   const handleSubmitsignup = async (event) => {
+    setprog(true);
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     console.log(event.currentTarget);
@@ -49,17 +63,19 @@ export default function SignIn() {
     });
     const json = await response.json();
     // console.log(json.token);
+    setprog(false);
     if (!json.error) {
       localStorage.setItem("token", json.authtoken);
       console.log(json);
       navigate("/");
     } else {
-      alert(json.error);
+      setopen(true);
     }
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    setprog(true);
     const data = new FormData(event.currentTarget);
     console.log({
       username: data.get("username"),
@@ -79,20 +95,60 @@ export default function SignIn() {
     });
     const json = await response.json();
     console.log(json);
+    setprog(false);
     if (!json.error) {
       localStorage.setItem("token", json.authtoken);
       // setuser(true);
       navigate("/");
+      setopen(true);
     } else {
       // emailRef.current.value = "";
       // passwordRef.current.value = "";
-      alert(json.error);
+      setopen(true);
+      // alert(json.error);
       console.log(json);
     }
   };
 
   return (
     <>
+      <Snackbar
+        open={open}
+        autoHideDuration={6000}
+        onClose={() => setopen(false)}
+        anchorOrigin={{
+          vertical: "bottom",
+          horizontal: "left",
+        }}
+        TransitionComponent={SlideTransition}
+      >
+        <Alert
+          onClose={() => setopen(false)}
+          severity="error"
+          sx={{ width: "100%" }}
+        >
+          Invalid Credentials
+        </Alert>
+      </Snackbar>
+      <Snackbar
+        open={open}
+        autoHideDuration={6000}
+        onClose={() => setopen(false)}
+        anchorOrigin={{
+          vertical: "bottom",
+          horizontal: "left",
+        }}
+        TransitionComponent={SlideTransition}
+      >
+        <Alert
+          onClose={() => setopen(false)}
+          severity="success"
+          sx={{ width: "100%" }}
+        >
+          logged in Successfully
+        </Alert>
+      </Snackbar>
+      {prog && <Linearprogress />}
       {flag ? (
         <Container component="main" maxWidth="xs">
           <CssBaseline />
@@ -207,7 +263,8 @@ export default function SignIn() {
               </Button>
               <Grid container justifyContent="flex-end">
                 <Grid item>
-                    Already have an account? <Button onClick={()=>setflag(false)}>Sign in</Button>
+                  Already have an account?{" "}
+                  <Button onClick={() => setflag(false)}>Sign in</Button>
                 </Grid>
               </Grid>
             </Box>
@@ -271,7 +328,8 @@ export default function SignIn() {
               </Button>
               <Grid container>
                 <Grid item>
-                    {"Don't have an account?"}<Button  onClick={()=>setflag(true)}  >Signup now</Button>
+                  {"Don't have an account?"}
+                  <Button onClick={() => setflag(true)}>Signup now</Button>
                 </Grid>
               </Grid>
             </Box>

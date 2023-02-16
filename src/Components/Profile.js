@@ -23,9 +23,12 @@ import { IconButton } from "@mui/material";
 import followericon from "./followers.png";
 import followingicon from "./following.png";
 import FollowingModal from "./FolllowingModal"
+import LogoutIcon from '@mui/icons-material/Logout';
+import Buffer from "./Buffer"
+
 import { useState } from "react";
 const theme = createTheme();
-const host = "https://redditbackend.onrender.com";
+const host = "http://localhost:5000";
 const style = {
   position: "absolute",
   top: "50%",
@@ -105,6 +108,7 @@ function Profile() {
 
   return (
     <>
+      {!userdetails && <Buffer/>}
       {userdetails && (
         <div className="my-5 container">
           <div className="row">

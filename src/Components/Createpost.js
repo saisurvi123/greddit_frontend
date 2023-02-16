@@ -18,7 +18,7 @@ import UploadIcon from "@mui/icons-material/Upload";
 import { useState } from "react";
 import { Stack } from "@mui/material";
 import { useRef } from "react";
-const host="https://redditbackend.onrender.com"
+const host="http://localhost:5000"
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
@@ -49,8 +49,8 @@ export default function FullScreenDialog(props) {
         text:textref.current.value
      }),
     });
-    console.log(json)
     const json = await response.json();
+    console.log(json)
     if(json.alert){
       alert("your post banned words ???");
     }

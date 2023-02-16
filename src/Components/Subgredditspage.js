@@ -10,10 +10,11 @@ import { useNavigate } from "react-router-dom";
 import AddIcon from "@mui/icons-material/Add";
 import { Button } from "@mui/material";
 import Createpost from "./Createpost"
+import Buffer from "./Buffer"
 import PostDesign from "./PostDesign";
 
 // import Sgfollowers from "./Sgfollowers";
-const host = "https://redditbackend.onrender.com";
+const host = "http://localhost:5000";
 function Subgredditspage() {
   const navigate = useNavigate();
   const [greddit, setgreddit] = useState(null);
@@ -82,6 +83,7 @@ function Subgredditspage() {
 
   return (
     <>
+    {(!greddit || !user) && <Buffer/>}
       {greddit && user && (
         <div className="container my-5">
           <Stack

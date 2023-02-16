@@ -2,7 +2,7 @@ import { useState } from "react";
 import sgcontext from "./sgcontext";
 const host = "https://redditbackend.onrender.com";
 const Sgstate = (props) => {
-  const initalstate = [];
+  const initalstate =null;
   const [state, setstate] = useState(initalstate);
   const [username, setusername] = useState(null)
   // const token = localStorage.getItem('token');

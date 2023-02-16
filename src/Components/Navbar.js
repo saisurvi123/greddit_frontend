@@ -21,6 +21,7 @@ import Switch from "@mui/material/Switch";
 import Stack from "@mui/material/Stack";
 import { Navigate, useNavigate } from "react-router-dom";
 import "../App.css";
+import LogoutIcon from '@mui/icons-material/Logout';
 import logo from "./reddit.png";
 
 const MaterialUISwitch = styled(Switch)(({ theme }) => ({
@@ -235,7 +236,10 @@ function ResponsiveAppBar() {
                       key={setting}
                       onClick={() => handleCloseUserMenu(setting)}
                     >
-                      <Typography textAlign="center">{setting}</Typography>
+                      <Typography textAlign="center">
+                      {(setting==="Logout") && <LogoutIcon/>}
+                      {"  "}
+                      {setting}</Typography>
                     </MenuItem>
                   ))}
                 </Menu>
