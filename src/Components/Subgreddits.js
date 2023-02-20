@@ -58,7 +58,7 @@ function Subgreddits() {
   const addtag = () => {
     // console.log("hai")
     console.log(tagref.current.value);
-    let newwords = [].concat(tags, tagref.current.value);
+    let newwords = [].concat(tags,  tagref.current.value.toLowerCase());
     settags(newwords);
     // console.log(tags);
     tagref.current.value = "";
@@ -550,8 +550,8 @@ function Subgreddits() {
                 }
               }
             }).filter((greddit=>{
-              if(greddit.followers.find((user1)=>{
-                return (user1.id===id && user1.status!=="accepted")
+              if(!greddit.followers.find((user1)=>{
+                return ((user1.id===id && user1.status==="accepted"))
               }) && greddit.user!==id)return greddit
             }))
             .sort(function (a, b) {
