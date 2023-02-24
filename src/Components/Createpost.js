@@ -18,54 +18,53 @@ import UploadIcon from "@mui/icons-material/Upload";
 import { useState } from "react";
 import { Stack } from "@mui/material";
 import { useRef } from "react";
-const host="https://redditbackend.onrender.com"
+const host = "";
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
 export default function FullScreenDialog(props) {
   const textref = useRef("");
-  
+
   const [open, setOpen] = React.useState(false);
 
   const handleClickOpen = () => {
     setOpen(true);
   };
-  
+
   const handleClose = () => {
     setOpen(false);
   };
-  
-  const uploadpost=async()=>{
-    console.log("hello")
+
+  const uploadpost = async () => {
+    console.log("hello");
     console.log(textref.current.value);
     const response = await fetch(`${host}/api/subgreddit/uploadpost`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "auth-token":localStorage.getItem('token')
+        "auth-token": localStorage.getItem("token"),
       },
-      body: JSON.stringify({ gredditid: props.id,
-        text:textref.current.value
-     }),
+      body: JSON.stringify({
+        gredditid: props.id,
+        text: textref.current.value,
+      }),
     });
     const json = await response.json();
-    console.log(json)
-    if(json.alert){
+    console.log(json);
+    if (json.alert) {
       alert("your post banned words ???");
     }
     // console.log("hey hello");
     // console.log(json);
     // navigate("/subgreddits")
-    if(props.addpage){
+    if (props.addpage) {
       props.setaddpage(false);
-    }
-    else{
+    } else {
       props.setaddpage(true);
     }
     handleClose();
-    
-  }
+  };
   return (
     <div>
       <Button
@@ -115,8 +114,10 @@ export default function FullScreenDialog(props) {
                 spacing={2}
                 className="my-4"
               >
-                <Button variant="contained" endIcon={<UploadIcon />}
-                onClick={uploadpost}
+                <Button
+                  variant="contained"
+                  endIcon={<UploadIcon />}
+                  onClick={uploadpost}
                 >
                   Post
                 </Button>

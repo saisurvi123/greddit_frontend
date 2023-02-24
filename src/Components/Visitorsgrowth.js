@@ -12,7 +12,7 @@ import {
 import { useState } from "react";
 import Buffer from "./Buffer";
 import { useEffect } from "react";
-const host = "https://redditbackend.onrender.com";
+const host = "";
 
 function DateUserGraph(props) {
   const [data, setdata] = useState(null);
@@ -37,19 +37,14 @@ function DateUserGraph(props) {
       {!data && <Buffer />}
       {data && (
         <ResponsiveContainer width="60%" height={400}>
-        
-        <BarChart
-          width={400}
-          height={300}
-          data={data}
-        >
-          <CartesianGrid strokeDasharray="3 3"  />
-          <XAxis dataKey="date" />
-          <YAxis />
-          <Tooltip />
-          <Legend />
-          <Bar dataKey="visitors" fill="#8884d8" />
-        </BarChart>
+          <BarChart width={400} height={300} data={data}>
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis dataKey="date" />
+            <YAxis />
+            <Tooltip />
+            <Legend />
+            <Bar dataKey="visitors" fill="#8884d8" />
+          </BarChart>
         </ResponsiveContainer>
       )}
     </>

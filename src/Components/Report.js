@@ -9,7 +9,7 @@ import Button from "@mui/material/Button";
 import { useEffect } from "react";
 import Typography from "@mui/material/Typography";
 import CancelableButton from "./Cancelinsec";
-const host = "https://redditbackend.onrender.com";
+const host = "";
 function Report(props) {
   const ignorereport = async () => {
     const response = await fetch(`${host}/api/subgreddit/ignorereport`, {
@@ -39,8 +39,7 @@ function Report(props) {
     console.log(json);
     if (props.flag) {
       props.setflag(false);
-    } 
-    else props.setflag(true);
+    } else props.setflag(true);
   };
   const blockuser = async () => {
     const response = await fetch(`${host}/api/subgreddit/blockuser`, {
@@ -51,7 +50,7 @@ function Report(props) {
       body: JSON.stringify({
         user: props.report.reporteduser,
         reportid: props.report._id,
-        gredditid:props.report.gredditid
+        gredditid: props.report.gredditid,
       }),
     });
     const json = await response.json();
@@ -59,12 +58,8 @@ function Report(props) {
     console.log(json);
     if (props.flag) {
       props.setflag(false);
-    } 
-    else props.setflag(true);
+    } else props.setflag(true);
   };
-
-
-
 
   const fetchuser = async (id, postedbyflag) => {
     const response = await fetch(`${host}/api/subgreddit/getusername`, {
@@ -139,7 +134,7 @@ function Report(props) {
               >
                 Delete post
               </Button>
-              <CancelableButton  blockuser={blockuser}  report={props.report}/>
+              <CancelableButton blockuser={blockuser} report={props.report} />
               <Button
                 variant="contained"
                 disabled={props.report.ignored}

@@ -15,12 +15,8 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useNavigate } from "react-router-dom";
 
 export default function SignUp() {
-    const navigate=useNavigate();
-    const host = "https://redditbackend.onrender.com";
-  
-  return (
-    <>
-      
-    </>
-        );
+  const navigate = useNavigate();
+  const host = "";
+
+  return <></>;
 }

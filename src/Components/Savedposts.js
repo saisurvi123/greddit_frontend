@@ -3,12 +3,12 @@ import PostDesign from "./PostDesign";
 import { useState } from "react";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import Buffer from "./Buffer"
-const host = "https://redditbackend.onrender.com";
+import Buffer from "./Buffer";
+const host = "";
 
 function Savedposts() {
   const [posts, setposts] = useState(null);
-  const [savedpostflag, setsavedpostflag] = useState(false)
+  const [savedpostflag, setsavedpostflag] = useState(false);
   const fetchuser = async () => {
     const response = await fetch(`${host}/api/auth/getuser`, {
       method: "POST",
@@ -32,21 +32,23 @@ function Savedposts() {
 
   return (
     <>
-    {
-        posts && (posts.length===0) && (
-            <div className="container my-5">
-                <h5>No Saved Posts</h5>
-            </div>
-        )
-    }
-    {!posts && <Buffer/> }
-      {posts  && (
+      {posts && posts.length === 0 && (
+        <div className="container my-5">
+          <h5>No Saved Posts</h5>
+        </div>
+      )}
+      {!posts && <Buffer />}
+      {posts && (
         <div className="container my-5">
           <div className="row">
             {posts.map((post) => {
               return (
                 <div className="col col-md-12 my-4">
-                  <PostDesign id={post}  savedpostflag={savedpostflag} setsavedpostflag={setsavedpostflag}/>
+                  <PostDesign
+                    id={post}
+                    savedpostflag={savedpostflag}
+                    setsavedpostflag={setsavedpostflag}
+                  />
                 </div>
               );
             })}

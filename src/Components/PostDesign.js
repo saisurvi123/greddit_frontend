@@ -74,7 +74,7 @@ const ExpandMore = styled((props) => {
     duration: theme.transitions.duration.shortest,
   }),
 }));
-const host = "https://redditbackend.onrender.com";
+const host = "";
 
 export default function RecipeReviewCard(props) {
   // console.log(props.id);
@@ -105,9 +105,9 @@ export default function RecipeReviewCard(props) {
       body: JSON.stringify({ postid: props.id }),
     });
     const json = await response.json();
-    let localtime=new Date(Number(json.date));
-    json.date=localtime.toDateString()
-    json.time=localtime.toTimeString()
+    let localtime = new Date(Number(json.date));
+    json.date = localtime.toDateString();
+    json.time = localtime.toTimeString();
     // console.log(json);
     if (json.error) alert(json.error);
     else {
@@ -257,7 +257,7 @@ export default function RecipeReviewCard(props) {
         postid: post._id,
         gredditid: post.gredditid,
         postedby: post.postedby,
-        concern:concernref.current.value
+        concern: concernref.current.value,
       }),
     });
     const json = await response.json();
@@ -320,10 +320,8 @@ export default function RecipeReviewCard(props) {
 
   return (
     <>
-    {console.log(post)}
+      {console.log(post)}
       {post && (
-        
-        
         <Card>
           <CardHeader
             avatar={

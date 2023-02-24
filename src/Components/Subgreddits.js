@@ -35,7 +35,7 @@ function SlideTransition(props) {
   return <Slide {...props} direction="up" />;
 }
 
-const host = "https://redditbackend.onrender.com";
+const host = "";
 function Subgreddits() {
   const [greddits, setgreddits] = useState(null);
   const sorttype = ["Name Asc", "Name Desc", "FollowerCount", "CreationDate"];
@@ -58,7 +58,7 @@ function Subgreddits() {
   const addtag = () => {
     // console.log("hai")
     console.log(tagref.current.value);
-    let newwords = [].concat(tags,  tagref.current.value.toLowerCase());
+    let newwords = [].concat(tags, tagref.current.value.toLowerCase());
     settags(newwords);
     // console.log(tags);
     tagref.current.value = "";
@@ -139,7 +139,7 @@ function Subgreddits() {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({gredditid:id}),
+      body: JSON.stringify({ gredditid: id }),
     });
     navigate(`/subgreddits/${id}`);
   };
@@ -332,7 +332,7 @@ function Subgreddits() {
               {
                 /* console.log(greddit); */
               }
-              
+
               if (searchedword == "") {
                 if (tags.length == 0) return greddit;
                 else {
@@ -350,10 +350,15 @@ function Subgreddits() {
                   }
                 }
               }
-            }).filter((greddit)=>{
-              if(greddit.followers.find((user1)=>{
-                return (user1.id===id && user1.status==="accepted")
-              }) || greddit.user===id)return greddit
+            })
+            .filter((greddit) => {
+              if (
+                greddit.followers.find((user1) => {
+                  return user1.id === id && user1.status === "accepted";
+                }) ||
+                greddit.user === id
+              )
+                return greddit;
             })
             .sort(function (a, b) {
               if (st == "Name Asc") {
@@ -531,7 +536,7 @@ function Subgreddits() {
               {
                 /* console.log(greddit); */
               }
-              
+
               if (searchedword == "") {
                 if (tags.length == 0) return greddit;
                 else {
@@ -549,11 +554,16 @@ function Subgreddits() {
                   }
                 }
               }
-            }).filter((greddit=>{
-              if(!greddit.followers.find((user1)=>{
-                return ((user1.id===id && user1.status==="accepted"))
-              }) && greddit.user!==id)return greddit
-            }))
+            })
+            .filter((greddit) => {
+              if (
+                !greddit.followers.find((user1) => {
+                  return user1.id === id && user1.status === "accepted";
+                }) &&
+                greddit.user !== id
+              )
+                return greddit;
+            })
             .sort(function (a, b) {
               if (st == "Name Asc") {
                 return a.name.toLowerCase().localeCompare(b.name.toLowerCase());

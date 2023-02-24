@@ -11,7 +11,7 @@ import { Stack } from "@mui/material";
 import { Button } from "@mui/material";
 function Sgfollowers(props) {
   const [user, setuser] = useState(null);
-  const host = "https://redditbackend.onrender.com";
+  const host = "";
   // console.log(props.id)
 
   const acceptreq = async () => {
@@ -20,7 +20,10 @@ function Sgfollowers(props) {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ gredditid: props.greddit._id,userid:props.id.id }),
+      body: JSON.stringify({
+        gredditid: props.greddit._id,
+        userid: props.id.id,
+      }),
     });
     const json = await response.json();
     // console.log("hey hello");
@@ -35,7 +38,10 @@ function Sgfollowers(props) {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ gredditid: props.greddit._id,userid:props.id.id }),
+      body: JSON.stringify({
+        gredditid: props.greddit._id,
+        userid: props.id.id,
+      }),
     });
     const json = await response.json();
     // console.log("hey hello");
@@ -84,12 +90,17 @@ function Sgfollowers(props) {
                         alignItems="center"
                         spacing={2}
                       >
-                        <Button size="small" variant="contained"
-                        onClick={acceptreq}
+                        <Button
+                          size="small"
+                          variant="contained"
+                          onClick={acceptreq}
                         >
                           accept
                         </Button>
-                        <Button size="small" color="error" variant="contained"
+                        <Button
+                          size="small"
+                          color="error"
+                          variant="contained"
                           onClick={rejectreq}
                         >
                           reject

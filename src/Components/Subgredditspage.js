@@ -9,34 +9,33 @@ import { Avatar } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import AddIcon from "@mui/icons-material/Add";
 import { Button } from "@mui/material";
-import Createpost from "./Createpost"
-import Buffer from "./Buffer"
+import Createpost from "./Createpost";
+import Buffer from "./Buffer";
 import PostDesign from "./PostDesign";
 
 // import Sgfollowers from "./Sgfollowers";
-const host = "https://redditbackend.onrender.com";
+const host = "";
 function Subgredditspage() {
   const navigate = useNavigate();
   const [greddit, setgreddit] = useState(null);
-  const [user, setuser] = useState(null)
+  const [user, setuser] = useState(null);
   const params = useParams();
   const leavegreddit = async (gredditid) => {
     const response = await fetch(`${host}/api/subgreddit/leavegreddit`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "auth-token":localStorage.getItem('token')
+        "auth-token": localStorage.getItem("token"),
       },
       body: JSON.stringify({ gredditid: greddit }),
     });
     const json = await response.json();
     // console.log("hey hello");
     console.log(json);
-    navigate("/subgreddits")
+    navigate("/subgreddits");
     //   if (!json.error) setgreddit(json);
   };
-  const [addpage, setaddpage] = useState(false)
-
+  const [addpage, setaddpage] = useState(false);
 
   const getuser = async () => {
     const response = await fetch(`${host}/api/auth/getuser`, {
@@ -50,19 +49,16 @@ function Subgredditspage() {
     console.log(json);
     if (json.error) alert(json.error);
     else {
-      setuser(json)
+      setuser(json);
     }
   };
-
-
-
 
   const fetchdata = async () => {
     const response = await fetch(`${host}/api/subgreddit/getgredditbyid`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "auth-token":localStorage.getItem('token')
+        "auth-token": localStorage.getItem("token"),
       },
       body: JSON.stringify({ id: params.id }),
     });
@@ -76,14 +72,14 @@ function Subgredditspage() {
       navigate("/login");
     } else {
       fetchdata();
-      getuser()
+      getuser();
       console.log(greddit);
     }
   }, [addpage]);
 
   return (
     <>
-    {(!greddit || !user) && <Buffer/>}
+      {(!greddit || !user) && <Buffer />}
       {greddit && user && (
         <div className="container my-5">
           <Stack
@@ -92,8 +88,17 @@ function Subgredditspage() {
             alignItems="center"
             spacing={2}
           >
-            <Createpost id={params.id} setaddpage={setaddpage} addpage={addpage} />
-            <Button variant="contained" color="error" onClick={leavegreddit}   disabled={greddit.user===user._id}>
+            <Createpost
+              id={params.id}
+              setaddpage={setaddpage}
+              addpage={addpage}
+            />
+            <Button
+              variant="contained"
+              color="error"
+              onClick={leavegreddit}
+              disabled={greddit.user === user._id}
+            >
               Exit
             </Button>
           </Stack>
@@ -103,7 +108,7 @@ function Subgredditspage() {
             alignItems="center"
             spacing={2}
           >
-              <AssignmentIcon  color="primary"/>
+            <AssignmentIcon color="primary" />
             <h3>{greddit.name}</h3>
           </Stack>
           <p className="my-4">{greddit.description}</p>
@@ -128,20 +133,15 @@ function Subgredditspage() {
             })}
           </div>
           <div className="row">
-            {
-              (greddit.posts.length!=0) && (
-                greddit.posts.map((post)=>{
-                  return (
-                    <div className="col col-md-12 my-4">
-                      <PostDesign id={post}/>
-                    </div>
-                  )
-                })
-              )
-            }
+            {greddit.posts.length != 0 &&
+              greddit.posts.map((post) => {
+                return (
+                  <div className="col col-md-12 my-4">
+                    <PostDesign id={post} />
+                  </div>
+                );
+              })}
           </div>
-
-
         </div>
       )}
     </>

@@ -1,5 +1,5 @@
 import React, { useTransition } from "react";
-import FollowersModal from "./FollowersModal"
+import FollowersModal from "./FollowersModal";
 import { Navigate, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import Avatar from "@mui/material/Avatar";
@@ -22,13 +22,13 @@ import EditIcon from "@mui/icons-material/Edit";
 import { IconButton } from "@mui/material";
 import followericon from "./followers.png";
 import followingicon from "./following.png";
-import FollowingModal from "./FolllowingModal"
-import LogoutIcon from '@mui/icons-material/Logout';
-import Buffer from "./Buffer"
+import FollowingModal from "./FolllowingModal";
+import LogoutIcon from "@mui/icons-material/Logout";
+import Buffer from "./Buffer";
 
 import { useState } from "react";
 const theme = createTheme();
-const host = "https://redditbackend.onrender.com";
+const host = "";
 const style = {
   position: "absolute",
   top: "50%",
@@ -55,7 +55,6 @@ function Profile() {
     const json = await response.json();
     console.log(json);
     setuserdetails(json);
-    
   };
 
   useEffect(() => {
@@ -70,45 +69,47 @@ function Profile() {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
-  const handleSubmit = async(event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     // console.log(updatedetails)
     const data = new FormData(event.currentTarget);
-    console.log(data.get('username'))
+    console.log(data.get("username"));
     const newuserdetails = {};
-    if(data.get('username')!=userdetails.username)newuserdetails.username=data.get('username');
-    if(data.get('firstname')!=userdetails.firstname)newuserdetails.firstname=data.get('firstname');
-    if(data.get('lastname')!=userdetails.lastname)newuserdetails.lastname=data.get('lastname');
-    if(data.get('email')!=userdetails.email)newuserdetails.email=data.get('email');
-    if(data.get('age')!=userdetails.age)newuserdetails.age=data.get('age');
-    if(data.get('contactnumber')!=userdetails.contactnumber)newuserdetails.contactnumber=data.get('contactnumber');;
-    if(data.get('password')!="******")newuserdetails.password=data.get('password');;
-    
+    if (data.get("username") != userdetails.username)
+      newuserdetails.username = data.get("username");
+    if (data.get("firstname") != userdetails.firstname)
+      newuserdetails.firstname = data.get("firstname");
+    if (data.get("lastname") != userdetails.lastname)
+      newuserdetails.lastname = data.get("lastname");
+    if (data.get("email") != userdetails.email)
+      newuserdetails.email = data.get("email");
+    if (data.get("age") != userdetails.age)
+      newuserdetails.age = data.get("age");
+    if (data.get("contactnumber") != userdetails.contactnumber)
+      newuserdetails.contactnumber = data.get("contactnumber");
+    if (data.get("password") != "******")
+      newuserdetails.password = data.get("password");
 
-
-  const response = await fetch(`${host}/api/auth/edituser`, {
-    method: "PUT",
-    headers: {
-      "Content-Type": "application/json",
-      "auth-token":
-        localStorage.getItem('token'),
-      
-    },
-    body: JSON.stringify(newuserdetails),
-  });
-  const json = await response.json();
-  console.log(json)
-  if(!json.error){
-    setuserdetails(json);
-  }
-  handleClose();
-  window.location.reload();
-    
+    const response = await fetch(`${host}/api/auth/edituser`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        "auth-token": localStorage.getItem("token"),
+      },
+      body: JSON.stringify(newuserdetails),
+    });
+    const json = await response.json();
+    console.log(json);
+    if (!json.error) {
+      setuserdetails(json);
+    }
+    handleClose();
+    window.location.reload();
   };
 
   return (
     <>
-      {!userdetails && <Buffer/>}
+      {!userdetails && <Buffer />}
       {userdetails && (
         <div className="my-5 container">
           <div className="row">
@@ -120,7 +121,9 @@ function Profile() {
                 spacing={2}
                 className="my-3"
               >
-                <Avatar sx={{ width: 64, height: 64 }}>{userdetails.firstname[0].toUpperCase()}</Avatar>
+                <Avatar sx={{ width: 64, height: 64 }}>
+                  {userdetails.firstname[0].toUpperCase()}
+                </Avatar>
                 <Typography align="center" variant="h5" gutterBottom>
                   {" "}
                   {userdetails.firstname} {userdetails.lastname}
@@ -320,7 +323,7 @@ function Profile() {
                 spacing={2}
                 className="my-5"
               >
-                <FollowingModal following={userdetails.following}/>
+                <FollowingModal following={userdetails.following} />
                 <img
                   src={followericon}
                   style={{
@@ -337,8 +340,7 @@ function Profile() {
                 className="my-5"
               >
                 <Button size="medium">
-                  <FollowersModal followers={userdetails.followers}/>
-      
+                  <FollowersModal followers={userdetails.followers} />
                 </Button>
                 <img
                   src={followingicon}

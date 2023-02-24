@@ -1,10 +1,10 @@
 import { useState } from "react";
 import sgcontext from "./sgcontext";
-const host = "https://redditbackend.onrender.com";
+const host = "";
 const Sgstate = (props) => {
-  const initalstate =null;
+  const initalstate = null;
   const [state, setstate] = useState(initalstate);
-  const [username, setusername] = useState(null)
+  const [username, setusername] = useState(null);
   // const token = localStorage.getItem('token');
   const getgreddits = async () => {
     const response = await fetch(`${host}/api/subgreddit/getmygreddits`, {
@@ -15,7 +15,7 @@ const Sgstate = (props) => {
       },
     });
     const json = await response.json();
-    console.log("hey hello")
+    console.log("hey hello");
     console.log(json);
     if (!json.error) setstate(json);
   };
@@ -32,16 +32,15 @@ const Sgstate = (props) => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "auth-token": localStorage.getItem("token")
+        "auth-token": localStorage.getItem("token"),
       },
-      body: JSON.stringify(newdata)
+      body: JSON.stringify(newdata),
     });
     const json = await response.json();
     console.log(json);
     if (!json.error) setstate(state.concat(json));
     else alert(json.error);
   };
-
 
   const getusername = async (id) => {
     const newdata = {
@@ -54,7 +53,7 @@ const Sgstate = (props) => {
       },
       body: JSON.stringify(newdata),
     });
-    console.log(response)
+    console.log(response);
     const json = await response.json();
     console.log(json);
   };
@@ -62,7 +61,7 @@ const Sgstate = (props) => {
   const deletegreddit = async (id) => {
     // api call
     console.log(id);
-    const response = await fetch(`${host}/api/subgreddit/deletegreddit/${id}`,{
+    const response = await fetch(`${host}/api/subgreddit/deletegreddit/${id}`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
@@ -71,14 +70,19 @@ const Sgstate = (props) => {
     });
     const json = await response.json();
     console.log(json);
-    if (!json.error)setstate(state.filter((x) => x._id !== id));
-
-    
+    if (!json.error) setstate(state.filter((x) => x._id !== id));
   };
 
   return (
     <sgcontext.Provider
-      value={{ state, addgreddits, getgreddits, deletegreddit,username,getusername }}
+      value={{
+        state,
+        addgreddits,
+        getgreddits,
+        deletegreddit,
+        username,
+        getusername,
+      }}
     >
       {props.children}
     </sgcontext.Provider>

@@ -19,8 +19,8 @@ import postcontext from "../Context/posts/postcontext";
 import { useState } from "react";
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
-import Slide from '@mui/material/Slide';
-import Grow from '@mui/material/Grow';
+import Slide from "@mui/material/Slide";
+import Grow from "@mui/material/Grow";
 const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
@@ -31,10 +31,11 @@ function SlideTransition(props) {
 export default function SignIn() {
   const [prog, setprog] = useState(false);
   const [open, setopen] = useState(false);
+  const [open1, setopen1] = useState(false);
   // const setuser=useContext(postcontext).setuser;
   const [flag, setflag] = useState(false);
   const navigate = useNavigate();
-  const host = "https://redditbackend.onrender.com";
+  const host = "";
   const handleSubmitsignup = async (event) => {
     setprog(true);
     event.preventDefault();
@@ -97,10 +98,10 @@ export default function SignIn() {
     console.log(json);
     setprog(false);
     if (!json.error) {
+      setopen1(true);
       localStorage.setItem("token", json.authtoken);
       // setuser(true);
       navigate("/");
-      setopen(true);
     } else {
       // emailRef.current.value = "";
       // passwordRef.current.value = "";
@@ -130,10 +131,11 @@ export default function SignIn() {
           Invalid Credentials
         </Alert>
       </Snackbar>
+      {/* for logging successfully */}
       <Snackbar
-        open={open}
+        open={open1}
         autoHideDuration={6000}
-        onClose={() => setopen(false)}
+        onClose={() => setopen1(false)}
         anchorOrigin={{
           vertical: "bottom",
           horizontal: "left",
@@ -141,7 +143,7 @@ export default function SignIn() {
         TransitionComponent={SlideTransition}
       >
         <Alert
-          onClose={() => setopen(false)}
+          onClose={() => setopen1(false)}
           severity="success"
           sx={{ width: "100%" }}
         >

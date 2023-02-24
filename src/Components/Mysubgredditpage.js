@@ -33,11 +33,11 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import PeopleOutlineOutlinedIcon from "@mui/icons-material/PeopleOutlineOutlined";
 import Report from "./Report";
-import Growthsb from "./Growthsb"
-import Postsgrowth from "./Postsgrowth"
-import Visitorsgrowth from "./Visitorsgrowth"
-import Reportedpostsgrowth from "./Reportedpostsgrowth"
-const host = "https://redditbackend.onrender.com";
+import Growthsb from "./Growthsb";
+import Postsgrowth from "./Postsgrowth";
+import Visitorsgrowth from "./Visitorsgrowth";
+import Reportedpostsgrowth from "./Reportedpostsgrowth";
+const host = "";
 // const green="#4caf50"
 
 function TabPanel(props) {
@@ -275,18 +275,18 @@ function Mysubgredditpage() {
               <TabPanel value={value} index={4}>
                 <div className="row ">
                   <div className="col col-md-6 col-sm-12">
-                    <Growthsb  id={params.id}/>
+                    <Growthsb id={params.id} />
                   </div>
                   <div className="col col-md-6 col-sm-12">
-                    <Postsgrowth id={params.id}/>
+                    <Postsgrowth id={params.id} />
                   </div>
                 </div>
                 <div className="row ">
                   <div className="col col-md-6 col-sm-12">
-                    <Visitorsgrowth  id={params.id}/>
+                    <Visitorsgrowth id={params.id} />
                   </div>
                   <div className="col col-md-6 col-sm-12">
-                    <Reportedpostsgrowth id={params.id}/>
+                    <Reportedpostsgrowth id={params.id} />
                   </div>
                 </div>
               </TabPanel>

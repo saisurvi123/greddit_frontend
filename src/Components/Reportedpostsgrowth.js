@@ -12,7 +12,7 @@ import {
 import Buffer from "./Buffer";
 import { useState } from "react";
 import { useEffect } from "react";
-const host = "https://redditbackend.onrender.com";
+const host = "";
 
 function DateUserGraph(props) {
   const [data, setdata] = useState(null);
@@ -25,7 +25,6 @@ function DateUserGraph(props) {
       body: JSON.stringify({ gredditid: props.id }),
     });
     const json = await response.json();
-    // console.log("hey hello");
     console.log(json);
     if (!json.error) setdata(json);
   };
@@ -43,8 +42,8 @@ function DateUserGraph(props) {
             <YAxis />
             <Tooltip />
             <Legend />
-            <Bar dataKey="reportedposts" fill="#8884d8" />
-            <Bar dataKey="deletedposts" fill="#82ca9d" />
+            <Bar dataKey="reports" fill="#8884d8" />
+            <Bar dataKey="deletions" fill="#82ca9d" />
           </BarChart>
         </ResponsiveContainer>
       )}
