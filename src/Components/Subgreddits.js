@@ -35,7 +35,7 @@ function SlideTransition(props) {
   return <Slide {...props} direction="up" />;
 }
 
-const host = "";
+const host = "https://redditbackend.onrender.com";
 function Subgreddits() {
   const [greddits, setgreddits] = useState(null);
   const sorttype = ["Name Asc", "Name Desc", "FollowerCount", "CreationDate"];
