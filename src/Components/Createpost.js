@@ -18,7 +18,7 @@ import UploadIcon from "@mui/icons-material/Upload";
 import { useState } from "react";
 import { Stack } from "@mui/material";
 import { useRef } from "react";
-const host = "https://redditbackend.onrender.com";
+const host = "";
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });

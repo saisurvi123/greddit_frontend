@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Buffer from "./Buffer";
-const host = "https://redditbackend.onrender.com";
+const host = "";
 
 function Savedposts() {
   const [posts, setposts] = useState(null);

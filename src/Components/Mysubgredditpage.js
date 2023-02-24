@@ -37,7 +37,7 @@ import Growthsb from "./Growthsb";
 import Postsgrowth from "./Postsgrowth";
 import Visitorsgrowth from "./Visitorsgrowth";
 import Reportedpostsgrowth from "./Reportedpostsgrowth";
-const host = "https://redditbackend.onrender.com";
+const host = "";
 // const green="#4caf50"
 
 function TabPanel(props) {
