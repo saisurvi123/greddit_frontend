@@ -12,7 +12,7 @@ import {
 import { useState } from "react";
 import Buffer from "./Buffer";
 import { useEffect } from "react";
-const host = "";
+const host = "https://redditbackend.onrender.com";
 
 function DateUserGraph(props) {
   const [data, setdata] = useState(null);
