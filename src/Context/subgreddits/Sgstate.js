@@ -1,6 +1,6 @@
 import { useState } from "react";
 import sgcontext from "./sgcontext";
-const host = "";
+const host = "https://redditbackend.onrender.com";
 const Sgstate = (props) => {
   const initalstate = null;
   const [state, setstate] = useState(initalstate);

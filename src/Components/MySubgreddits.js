@@ -31,6 +31,9 @@ function MySubgreddits() {
     </Box>
   );
 
+  const getgreddits = useContext(sgcontext).getgreddits;
+  const deletegreddit = useContext(sgcontext).deletegreddit;
+  const greddits = useContext(sgcontext).state;
   useEffect(() => {
     if (!localStorage.getItem('token')) {
       navigate("/login");
@@ -38,9 +41,6 @@ function MySubgreddits() {
       getgreddits();
     }
   }, []);
-  const getgreddits = useContext(sgcontext).getgreddits;
-  const deletegreddit = useContext(sgcontext).deletegreddit;
-  const greddits = useContext(sgcontext).state;
   const handledelete=(id)=>{
     deletegreddit(id);
   }
